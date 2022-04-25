@@ -35,12 +35,15 @@ function restockedIcecreams(qty = 1) {
   };
 }
 
-const initialState = {
+const initialCakeState = {
   numOfCakes: 10,
+};
+
+const initialIcecreamState = {
   numOfIcecream: 10,
 };
 
-const reducer = (state = initialState, action) => {
+const cakeReducer = (state = initialCakeState, action) => {
   switch (action.type) {
     case CAKE_ORDERED:
       return {
@@ -54,21 +57,29 @@ const reducer = (state = initialState, action) => {
         numOfCakes: state.numOfCakes + action.payload,
       };
 
-    case ICECREAM_ORDERED:
-      return {
-        ...state,
-        numOfIcecream: state.numOfIcecream - 1,
-      };
-
-    case ICECREAM_RESTOCKED:
-      return {
-        ...state,
-        numOfIcecream: state.numOfIcecream + action.payload,
-      };
-
     default:
       return state;
   }
+};
+
+const icecreamReducer = (state = initialIcecreamState, action) => {
+    switch (action.type) {
+  
+      case ICECREAM_ORDERED:
+        return {
+          ...state,
+          numOfIcecream: state.numOfIcecream - 1,
+        };
+  
+      case ICECREAM_RESTOCKED:
+        return {
+          ...state,
+          numOfIcecream: state.numOfIcecream + action.payload,
+        };
+  
+      default:
+        return state;
+    }
 };
 
 const store = createStore(reducer);
