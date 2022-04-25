@@ -4,11 +4,13 @@ const bindActionCreators = redux.bindActionCreators;
 
 const CAKE_ORDERED = "CAKE_ORDERED";
 const CAKE_RESTOCKED = "CAKE_RESTOCKED";
+const ICECREAM_ORDERED = "ICECREAM_ORDERED";
+const ICECREAM_RESTOCKED = "ICECREAM_RESTOCKED";
 
-function orederCake() {
+function orederCake(qty = 1) {
   return {
     type: CAKE_ORDERED,
-    payload: 1,
+    payload: qty,
   };
 }
 
@@ -19,8 +21,23 @@ function restockedCakes(qty = 1) {
   };
 }
 
+function orderIcecream(qty = 1) {
+  return {
+    type: ICECREAM_ORDERED,
+    payload: qty,
+  };
+}
+
+function restockedIcecreams(qty = 1) {
+  return {
+    type: ICECREAM_RESTOCKED,
+    payload: qty,
+  };
+}
+
 const initialState = {
   numOfCakes: 10,
+  numOfIcecream: 10,
 };
 
 const reducer = (state = initialState, action) => {
@@ -35,6 +52,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         numOfCakes: state.numOfCakes + action.payload,
+      };
+
+    case ICECREAM_ORDERED:
+      return {
+        ...state,
+        numOfIcecream: state.numOfIcecream - 1,
+      };
+
+    case ICECREAM_RESTOCKED:
+      return {
+        ...state,
+        numOfIcecream: state.numOfIcecream + action.payload,
       };
 
     default:
@@ -53,12 +82,18 @@ const unsubscribe = store.subscribe(() =>
 // store.dispatch(orederCake());
 // store.dispatch(orederCake());
 // store.dispatch(restockedCakes(3));
+// store.dispatch(orderIcecream());
+// store.dispatch(orderIcecream());
+// store.dispatch(restockedIcecreams(2));
 
-const actions = bindActionCreators( { orederCake, restockedCakes }, store.dispatch );
+const actions = bindActionCreators( { orederCake, restockedCakes, orderIcecream, restockedIcecreams }, store.dispatch );
 
 actions.orederCake();
 actions.orederCake();
 actions.orederCake();
 actions.restockedCakes(3);
+actions.orderIcecream();
+actions.orderIcecream();
+actions.restockedIcecreams(2);
 
 unsubscribe();
